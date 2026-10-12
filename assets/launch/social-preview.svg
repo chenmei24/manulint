@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
+<title id="title">manulint — a local manuscript rule checklist</title>
+<desc id="desc">Conceptual checklist of structure, ethics wording, and references. Local rules support human review. A rule score does not predict acceptance.</desc>
+<defs>
+<linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0b1527"/><stop offset="1" stop-color="#13263b"/></linearGradient>
+</defs>
+<rect width="1280" height="640" fill="url(#bg)"/>
+<rect x="0" y="0" width="1280" height="8" fill="#95bcff"/>
+<circle cx="1240" cy="10" r="220" fill="#95bcff" opacity="0.045"/>
+<g font-family="DejaVu Sans, Arial, sans-serif"><rect x="64" y="59" width="122" height="31" rx="15" fill="#95bcff" fill-opacity="0.13"/>
+<text x="125" y="81" text-anchor="middle" fill="#95bcff" font-size="15" font-weight="700">OPEN SOURCE</text>
+<text x="200" y="81" fill="#9db2c8" font-size="16">MANUSCRIPT PREPARATION</text>
+<text x="64" y="164" fill="#f6f9fd" font-size="66" font-weight="700">manulint</text>
+<text x="64" y="262" fill="#f6f9fd" font-size="47" font-weight="700">A manuscript</text>
+<text x="64" y="322" fill="#f6f9fd" font-size="47" font-weight="700">review checklist.</text>
+<text x="64" y="399" fill="#b7c9dd" font-size="23">Structure, reporting, references</text>
+<text x="64" y="432" fill="#b7c9dd" font-size="23">and embedded figure checks.</text><rect x="686" y="104" width="530" height="420" rx="20" fill="#192d43" stroke="#3d586f"/>
+<text x="714" y="145" fill="#9db2c8" font-size="17">RULE CHECKLIST ILLUSTRATION</text><rect x="716" y="180" width="34" height="34" rx="7" fill="#244369" stroke="#95bcff"/>
+<path d="M725 196 l6 6 l11 -12" fill="none" stroke="#a6c8ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="769" y="202" fill="#f0f5fd" font-size="23" font-weight="700">Structure</text>
+<text x="769" y="235" fill="#abc0d7" font-size="18">Locate missing sections</text><rect x="716" y="270" width="34" height="34" rx="7" fill="#244369" stroke="#95bcff"/>
+<path d="M725 286 l6 6 l11 -12" fill="none" stroke="#a6c8ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="769" y="292" fill="#f0f5fd" font-size="23" font-weight="700">Ethics wording</text>
+<text x="769" y="325" fill="#abc0d7" font-size="18">Verify against source records</text><rect x="716" y="360" width="34" height="34" rx="7" fill="#244369" stroke="#95bcff"/>
+<path d="M725 376 l6 6 l11 -12" fill="none" stroke="#a6c8ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="769" y="382" fill="#f0f5fd" font-size="23" font-weight="700">Reference checks</text>
+<text x="769" y="415" fill="#abc0d7" font-size="18">Inspect suspected duplicates</text><line x1="714" y1="443" x2="1188" y2="443" stroke="#38536d"/>
+<text x="951" y="484" text-anchor="middle" fill="#b6d0ff" font-size="20">Rule score ≠ acceptance prediction</text>
+<line x1="64" y1="566" x2="1216" y2="566" stroke="#36506b"/>
+<text x="64" y="608" fill="#d3e0ef" font-size="19">Local rules · Human review</text>
+<text x="1216" y="608" text-anchor="end" fill="#91a7be" font-size="18">github.com/chenmei24</text>
+</g></svg>

@@ -2,8 +2,14 @@ name: Publish to PyPI
 
 on:
   push:
+    branches: ["master"]
+    paths: ["pyproject.toml", "manulint/__init__.py", ".github/workflows/publish.yml"]
     tags:
       - "v*"
+
+concurrency:
+  group: ${{ github.repository }}-pypi
+  cancel-in-progress: false
 
 jobs:
   publish:
@@ -18,10 +24,45 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Verify release version
+        run: |
+          python - <<'PY'
+          import os
+          import re
+          from pathlib import Path
+          from manulint import __version__
+          declared = re.search(r'^version = "([^"\n]+)"$', Path("pyproject.toml").read_text(), re.M).group(1)
+          tag_version = os.environ["GITHUB_REF_NAME"].removeprefix("v") if os.environ["GITHUB_REF_TYPE"] == "tag" else declared
+          if not (__version__ == declared == tag_version):
+              raise SystemExit(f"Version mismatch: tag={tag_version}, project={declared}, code={__version__}")
+          PY
+
+      - name: Test release
+        run: |
+          python -m pip install . build twine
+          python -m unittest discover -s tests -v
+          python -m manulint.demo --out-dir ci-demo
+
       - name: Build distributions
         run: |
-          python -m pip install --upgrade build
           python -m build
+          python -m twine check dist/*
 
+      - name: Check whether version is already published
+        id: release-status
+        shell: python
+        run: |
+          import os, urllib.request, urllib.error
+          from manulint import __version__
+          try:
+              urllib.request.urlopen("https://pypi.org/pypi/manulint/" + __version__ + "/json", timeout=30).close()
+              publish = "false"
+          except urllib.error.HTTPError as error:
+              if error.code != 404:
+                  raise
+              publish = "true"
+          with open(os.environ["GITHUB_OUTPUT"], "a") as output:
+              output.write("publish=" + publish + "\n")
       - name: Publish to PyPI
+        if: steps.release-status.outputs.publish == 'true'
         uses: pypa/gh-action-pypi-publish@release/v1

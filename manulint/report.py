@@ -1,44 +1,48 @@
-"""Render findings as terminal text or Markdown."""
+"""Render local findings without publication-readiness claims."""
 from __future__ import annotations
+
+import html
+import re
 
 from .checks import FAIL, WARN, INFO, Finding
 
-ICON = {FAIL: "❌", WARN: "⚠️", INFO: "ℹ️"}
-LABEL = {FAIL: "严重", WARN: "建议修改", INFO: "提示"}
+ICON = {FAIL: "[FLAG]", WARN: "[WARN]", INFO: "[INFO]"}
+LABEL = {FAIL: "Flagged rule", WARN: "Warning", INFO: "Information"}
+LIMITATION = ("Heuristic rule checks only. The score is not validated and does not measure "
+              "publication readiness, scientific quality, or ethical adequacy. Verify the target journal's author instructions.")
+
+
+def _plain(value: str) -> str:
+    return re.sub(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]", "", str(value)).replace("\r", " ")
+
+
+def _escape(value: str) -> str:
+    value = html.escape(_plain(value).replace("\n", " "), quote=True)
+    return re.sub(r"([\\`*_{}\[\]()#+.!|])", r"\\\1", value)
 
 
 def render_terminal(findings: list[Finding], score_: int, grade: str) -> str:
-    lines = [f"\nmanulint 检查完成  |  得分 {score_}/100  |  {grade}", "-" * 56]
-    for f in findings:
-        lines.append(f"{ICON[f.severity]} [{LABEL[f.severity]}] {f.message}")
-        if f.evidence:
-            lines.append(f"    ↳ {f.evidence}")
-    lines.append("-" * 56)
-    lines.append(f"共 {len(findings)} 项："
-                 f"{sum(1 for f in findings if f.severity == FAIL)} 严重 / "
-                 f"{sum(1 for f in findings if f.severity == WARN)} 建议修改 / "
-                 f"{sum(1 for f in findings if f.severity == INFO)} 提示")
+    lines = [f"\nmanulint rule check | score {score_}/100 | {_plain(grade)}", "-" * 56]
+    for finding in findings:
+        lines.append(f"{ICON[finding.severity]} {_plain(finding.message)}")
+        if finding.evidence:
+            lines.append(f"    Evidence: {_plain(finding.evidence)}")
+    lines += ["-" * 56, LIMITATION]
     return "\n".join(lines)
 
 
-CTA = ("---\n\n> 📝 **需要人工深度润色？**\n>\n"
-       "> AI 能改语法，但看不懂片子、做不了临床判断。\n"
-       "> 资深医学影像科医生提供医学论文润色与投稿前把关服务。\n"
-       "> 👉 {cta_url}\n")
-
-
 def render_markdown(findings: list[Finding], score_: int, grade: str,
-                    source: str, cta_url: str = "") -> str:
-    lines = [f"# manulint 检查报告", "", f"稿件：`{source}`",
-             f"得分：**{score_}/100** —— {grade}", "",
-             "| 级别 | 检查项 | 问题 | 依据 |",
-             "|---|---|---|---|"]
-    for f in findings:
-        ev = f.evidence.replace("|", "\\|").replace("\n", " ") if f.evidence else ""
-        lines.append(f"| {ICON[f.severity]} {LABEL[f.severity]} | {f.check} | {f.message} | {ev} |")
-    lines += ["",
-              "> 注：本工具为规则式自查，不能替代同行评议与期刊的具体要求，投稿前请核对目标期刊《作者指南》。",
-              ""]
+                    source: str, cta_url: str = "", profile: str = "") -> str:
+    lines = ["# manulint rule-check report", "", f"Manuscript: {_escape(source)}", "",
+             f"Rule score: **{score_}/100** — {_escape(grade)}", ""]
+    if profile:
+        lines += [f"Profile: {_escape(profile)}", ""]
+    lines += ["| Level | Check | Rule | Finding | Evidence |",
+              "|---|---|---|---|---|"]
+    for finding in findings:
+        fields = (LABEL[finding.severity], finding.check, finding.rule, finding.message, finding.evidence)
+        lines.append("| " + " | ".join(_escape(value) for value in fields) + " |")
+    lines += ["", "> " + LIMITATION, ""]
     if cta_url:
-        lines.append(CTA.format(cta_url=cta_url))
+        lines += ["Optional service link: " + _escape(cta_url), ""]
     return "\n".join(lines)

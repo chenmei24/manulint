@@ -1,10 +1,9 @@
 __pycache__/
 *.py[cod]
 *.egg-info/
-dist/
 build/
-.venv/
-venv/
+dist/
 .pytest_cache/
-*.md.report.md
-.DS_Store
+.venv/
+demo-output/
+ci-demo/
