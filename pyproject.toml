@@ -1,0 +1,27 @@
+[project]
+name = "manulint"
+version = "0.1.0"
+description = "Pre-submission checklist for medical/academic manuscripts — catch desk-rejection triggers before you submit"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "manulint contributors" }]
+keywords = ["manuscript", "peer-review", "academic-writing", "pre-submission", "checklist"]
+dependencies = [
+    "python-docx>=1.1.0",
+    "Pillow>=10.0.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0"]
+
+[project.scripts]
+manulint = "manulint.cli:main"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["manulint*"]
