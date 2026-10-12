@@ -1,4 +1,6 @@
-# Diagnostic Performance of Dual-Energy CT for the Detection of Pulmonary Embolism in a Large Cohort of Patients With Suspected Acute Pulmonary Embolism in Emergency Department Settings
+# Synthetic example — Diagnostic Performance of Dual-Energy CT for the Detection of Pulmonary Embolism in a Large Cohort of Patients With Suspected Acute Pulmonary Embolism in Emergency Department Settings
+
+This is a synthetic formatting demonstration, not a real study. Numbers and reference entries are illustrative and must not be used as research evidence.
 
 ## Abstract
 Background: Pulmonary embolism (PE) is a common cardiovascular emergency， early diagnosis is critical.  Dual-energy CT (DECT) has shown promise but large-scale validation remains limited.
